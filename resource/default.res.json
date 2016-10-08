@@ -1,0 +1,40 @@
+{
+	"groups": [
+		{
+			"keys": "bgImage,egretIcon,头像_jpg,bg233_jpg,bg2332_jpg",
+			"name": "preload"
+		}
+	],
+	"resources": [
+		{
+			"url": "assets/bg.jpg",
+			"type": "image",
+			"name": "bgImage"
+		},
+		{
+			"url": "assets/egret_icon.png",
+			"type": "image",
+			"name": "egretIcon"
+		},
+		{
+			"url": "config/description.json",
+			"type": "json",
+			"name": "description"
+		},
+		{
+			"url": "assets/头像.jpg",
+			"type": "image",
+			"name": "头像_jpg"
+		},
+		{
+			"url": "assets/bg233.jpg",
+			"type": "image",
+			"name": "bg233_jpg"
+		},
+		{
+			"name": "bg2332_jpg",
+			"type": "image",
+			"url": "assets/bg233.jpg"
+		}
+	]
+}
