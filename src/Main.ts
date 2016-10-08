@@ -163,7 +163,7 @@ class Main extends egret.DisplayObjectContainer {
         {
              egret.Tween.get( sky).to( {x:-stageW,y:0}, 300, egret.Ease.sineIn );
              this. page=2;
-             console.log("dao2");
+         
      
         } 
       
@@ -171,7 +171,7 @@ class Main extends egret.DisplayObjectContainer {
         {
              egret.Tween.get( sky).to( {x:0,y:0}, 300, egret.Ease.sineIn );
               this.page=1;
-            console.log( this.page+20);
+        
         } 
       if(sky.x <-426 && this.page==2&&sky.x>=-stageW)
         {
@@ -211,11 +211,7 @@ class Main extends egret.DisplayObjectContainer {
         this.sbhd(sky,stageW,stageH);
         var p1:Poke;
 
-        
- 
-       
-     
-
+  
 
 
         var topMask = new egret.Shape();
