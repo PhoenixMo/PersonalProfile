@@ -28,7 +28,14 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 
+  class Poke  extends egret.DisplayObjectContainer
+  {
+    
+   
 
+      
+    
+  }
      
      
 
@@ -126,13 +133,13 @@ class Main extends egret.DisplayObjectContainer {
      * Create a game scene
      */
     private sbhd(sky:egret.Bitmap,stageW:number,stageH:number):void{
-  
+    
      var touchStatus:boolean = false;              //当前触摸状态，按下时，值为true
      var distance:egret.Point = new egret.Point();
-     sky.touchEnabled=true;
-   
+     sky.touchEnabled=true;  
+      sky.addEventListener( egret.TouchEvent.TOUCH_BEGIN, downTouch, this )
      sky.addEventListener( egret.TouchEvent.TOUCH_END, onTouch, this );
-     sky.addEventListener( egret.TouchEvent.TOUCH_BEGIN, downTouch, this )
+
 
  
      function onTouch(evt:egret.TouchEvent):void { 
@@ -194,14 +201,19 @@ class Main extends egret.DisplayObjectContainer {
 
  }
 
+  
 
     private createGameScene():void {
         var sky:egret.Bitmap= this.createBitmapByName("bg233_jpg");
         this.addChild(sky);
         var stageW:number = this.stage.stageWidth;
         var stageH:number = this.stage.stageHeight;
-
         this.sbhd(sky,stageW,stageH);
+        var p1:Poke;
+
+        
+ 
+       
      
 
 

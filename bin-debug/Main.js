@@ -26,10 +26,20 @@
 //  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //////////////////////////////////////////////////////////////////////////////////////
+var Poke = (function (_super) {
+    __extends(Poke, _super);
+    function Poke() {
+        _super.apply(this, arguments);
+    }
+    var d = __define,c=Poke,p=c.prototype;
+    return Poke;
+}(egret.DisplayObjectContainer));
+egret.registerClass(Poke,'Poke');
 var Main = (function (_super) {
     __extends(Main, _super);
     function Main() {
         _super.call(this);
+        this.page = 1; //全局，表示页数
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
     var d = __define,c=Main,p=c.prototype;
@@ -104,31 +114,34 @@ var Main = (function (_super) {
         var touchStatus = false; //当前触摸状态，按下时，值为true
         var distance = new egret.Point();
         sky.touchEnabled = true;
-        sky.addEventListener(egret.TouchEvent.TOUCH_END, onTouch, this);
         sky.addEventListener(egret.TouchEvent.TOUCH_BEGIN, downTouch, this);
+        sky.addEventListener(egret.TouchEvent.TOUCH_END, onTouch, this);
         function onTouch(evt) {
             touchStatus = false;
-            var page = 1;
             if (sky.x > 0) {
-                page = 1;
                 egret.Tween.get(sky).to({ x: 0, y: 0 }, 100, egret.Ease.sineIn);
             }
             if (sky.x < -stageW) {
-                page = 2;
+                this.page = 2;
                 egret.Tween.get(sky).to({ x: -stageW, y: 0 }, 100, egret.Ease.sineIn);
             }
-            if (sky.x > -stageW / 3 && page == 1) {
+            if (sky.x > -stageW / 3 && this.page == 1) {
                 egret.Tween.get(sky).to({ x: 0, y: 0 }, 300, egret.Ease.sineIn);
-                page = 1;
+                this.page = 1;
             }
-            if (sky.x < -stageW / 3 && page == 1 && sky.x >= ((-stageW / 3) * 2)) {
+            if (sky.x < -stageW / 3 && this.page == 1) {
                 egret.Tween.get(sky).to({ x: -stageW, y: 0 }, 300, egret.Ease.sineIn);
-                page = 2;
+                this.page = 2;
+                console.log("dao2");
             }
-            if (sky.x >= ((-stageW / 3) * 2) && page == 2) {
+            else if ((sky.x >= ((-stageW / 3) * 2)) && this.page == 2) {
                 egret.Tween.get(sky).to({ x: 0, y: 0 }, 300, egret.Ease.sineIn);
-                page = 1;
-                console.log("5");
+                this.page = 1;
+                console.log(this.page + 20);
+            }
+            if (sky.x < -426 && this.page == 2 && sky.x >= -stageW) {
+                egret.Tween.get(sky).to({ x: -stageW, y: 0 }, 300, egret.Ease.sineIn);
+                this.page = 2;
             }
             this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, this);
         }
@@ -149,9 +162,8 @@ var Main = (function (_super) {
         this.addChild(sky);
         var stageW = this.stage.stageWidth;
         var stageH = this.stage.stageHeight;
-        //   sky.width = stageW;
-        //   sky.height = stageH;
         this.sbhd(sky, stageW, stageH);
+        var p1;
         var topMask = new egret.Shape();
         topMask.graphics.beginFill(0x000000, 0.5);
         topMask.graphics.drawRect(0, 0, stageW, 175);
