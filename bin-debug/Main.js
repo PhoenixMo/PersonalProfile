@@ -41,10 +41,13 @@ var Poke = (function (_super) {
         this.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
     };
     p.mouseMove = function (evt) {
-        var _this = this;
         if (this._touchStatus) {
             this.y = evt.stageY - this._distance.y;
         }
+    };
+    p.mouseUp = function (evt) {
+        var _this = this;
+        this._touchStatus = false;
         if (this.y < -1136 / 3) {
             egret.Tween.get(this).to({ x: 4 / 5 * this.stageW, y: -1136 }, 400, egret.Ease.sineIn)
                 .call(function () { _this.parent.addChildAt(_this, 1); }).to({ x: 4 / 5 * this.stageW, y: 0 }, 100, egret.Ease.sineIn);
@@ -63,9 +66,6 @@ var Poke = (function (_super) {
             egret.Tween.get(this).to({ x: 4 / 5 * this.stageW, y: 0 }, 200, egret.Ease.sineIn)
                 .to({ x: 4 / 5 * this.stageW, y: -25 }, 100, egret.Ease.sineIn).to({ x: 4 / 5 * this.stageW, y: 0 }, 100, egret.Ease.sineIn);
         }
-    };
-    p.mouseUp = function (evt) {
-        this._touchStatus = false;
         this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
     };
     return Poke;
@@ -91,7 +91,8 @@ var Music = (function (_super) {
         sound.addEventListener(egret.Event.COMPLETE, function (e) {
             this.init();
         }, this);
-        sound.load("resource/assets/ccnn.mp3");
+        sound.load("resource/assets/Instrumental.mp3");
+        console.log("ok");
     };
     //播放
     p.play = function () {

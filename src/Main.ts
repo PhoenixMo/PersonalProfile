@@ -45,6 +45,11 @@
             if( this._touchStatus ) {
                  this.y = evt.stageY - this._distance.y;            
             }            
+            
+    }
+
+    public mouseUp(evt:egret.TouchEvent) {
+            this._touchStatus = false;
              if( this.y < -1136/3 ){
                      egret.Tween.get( this ).to( {x:4/5*this.stageW,y:-1136}, 400, egret.Ease.sineIn )
                      .call( ()=>{ this.parent.addChildAt(this,1);} ).to({x:4/5*this.stageW,y:0}, 100, egret.Ease.sineIn);
@@ -60,15 +65,7 @@
                      this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
                  }else if(this.y>0){ egret.Tween.get( this ).to( {x:4/5*this.stageW,y:0}, 200, egret.Ease.sineIn )
                  .to( {x:4/5*this.stageW,y:-25}, 100, egret.Ease.sineIn ).to( {x:4/5*this.stageW,y:0}, 100, egret.Ease.sineIn );}
-   
-
-
-
-    }
-
-    public mouseUp(evt:egret.TouchEvent) {
-            this._touchStatus = false;
-            
+ 
             this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
     }
 
@@ -78,11 +75,11 @@
      
   class Music extends egret.DisplayObjectContainer {
 
-       private _sound: egret.Sound;
-       private _channel: egret.SoundChannel;
-       constructor() {
-       super();
-       this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
+    private _sound: egret.Sound;
+    private _channel: egret.SoundChannel;
+    constructor() {
+    super();
+    this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
 
     private onAddToStage(event: egret.Event) {
@@ -98,7 +95,8 @@
             this.init();
         }, this);
 
-        sound.load("resource/assets/ccnn.mp3");
+        sound.load("resource/assets/Instrumental.mp3");
+        console.log("ok");
     }
     //播放
     private play():void {

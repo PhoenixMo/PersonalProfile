@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bgImage,egretIcon,头像_jpg,bg233_jpg,bg2332_jpg,59280457_p0_master1200_jpg,59102653_p0_master1200_jpg,59214113_p0_master1200_jpg,凛 - 幸魂 (Instrumental)_mp3",
+			"keys": "bgImage,egretIcon,头像_jpg,bg233_jpg,bg2332_jpg,59280457_p0_master1200_jpg,59102653_p0_master1200_jpg,59214113_p0_master1200_jpg,凛 - 幸魂 (Instrumental)_mp3,Instrumental2_mp3",
 			"name": "preload"
 		}
 	],
@@ -52,9 +52,14 @@
 			"name": "59214113_p0_master1200_jpg"
 		},
 		{
-			"name": "凛 - 幸魂 (Instrumental)_mp3",
+			"url": "assets/Instrumental.mp3",
 			"type": "sound",
-			"url": "assets/凛 - 幸魂 (Instrumental).mp3"
+			"name": "Instrumental_mp3"
+		},
+		{
+			"name": "Instrumental2_mp3",
+			"type": "sound",
+			"url": "assets/Instrumental.mp3"
 		}
 	]
 }
