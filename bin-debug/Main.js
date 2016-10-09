@@ -30,8 +30,45 @@ var Poke = (function (_super) {
     __extends(Poke, _super);
     function Poke() {
         _super.apply(this, arguments);
+        this._touchStatus = false;
+        this._distance = new egret.Point();
+        this.stageW = 640;
     }
     var d = __define,c=Poke,p=c.prototype;
+    p.mouseDown = function (evt) {
+        this._touchStatus = true;
+        this._distance.y = evt.stageY - this.y;
+        this.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
+    };
+    p.mouseMove = function (evt) {
+        if (this._touchStatus) {
+            this.y = evt.stageY - this._distance.y;
+        }
+    };
+    p.mouseUp = function (evt) {
+        this._touchStatus = false;
+        if (this.y < -1136 / 3) {
+            egret.Tween.get(this).to({ x: 4 / 5 * this.stageW, y: -1136 }, 200, egret.Ease.sineIn)
+                .wait(300).to({ x: 4 / 5 * this.stageW, y: 0 }, 100, egret.Ease.sineIn);
+            this.parent.addChildAt(this, 1);
+            this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
+        }
+        else {
+            egret.Tween.get(this).to({ x: 4 / 5 * this.stageW, y: 0 }, 200, egret.Ease.sineIn)
+                .to({ x: 4 / 5 * this.stageW, y: 20 }, 100, egret.Ease.sineIn).to({ x: 4 / 5 * this.stageW, y: 0 }, 100, egret.Ease.sineIn);
+        }
+        if (this.y > 1136 / 3) {
+            egret.Tween.get(this).to({ x: 4 / 5 * this.stageW, y: -1136 }, 200, egret.Ease.sineIn)
+                .wait(300).to({ x: 4 / 5 * this.stageW, y: 0 }, 100, egret.Ease.sineIn);
+            this.parent.addChildAt(this, 1);
+            this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
+        }
+        else {
+            egret.Tween.get(this).to({ x: 4 / 5 * this.stageW, y: 0 }, 200, egret.Ease.sineIn)
+                .to({ x: 4 / 5 * this.stageW, y: -25 }, 100, egret.Ease.sineIn).to({ x: 4 / 5 * this.stageW, y: 0 }, 100, egret.Ease.sineIn);
+        }
+        this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
+    };
     return Poke;
 }(egret.DisplayObjectContainer));
 egret.registerClass(Poke,'Poke');
@@ -132,12 +169,10 @@ var Main = (function (_super) {
             if (sky.x < -stageW / 3 && this.page == 1) {
                 egret.Tween.get(sky).to({ x: -stageW, y: 0 }, 300, egret.Ease.sineIn);
                 this.page = 2;
-                console.log("dao2");
             }
             else if ((sky.x >= ((-stageW / 3) * 2)) && this.page == 2) {
                 egret.Tween.get(sky).to({ x: 0, y: 0 }, 300, egret.Ease.sineIn);
                 this.page = 1;
-                console.log(this.page + 20);
             }
             if (sky.x < -426 && this.page == 2 && sky.x >= -stageW) {
                 egret.Tween.get(sky).to({ x: -stageW, y: 0 }, 300, egret.Ease.sineIn);
@@ -157,13 +192,40 @@ var Main = (function (_super) {
             this.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, this);
         }
     };
+    p.zbhd = function (p) {
+        p.addEventListener(egret.TouchEvent.TOUCH_BEGIN, p.mouseDown, p);
+        p.addEventListener(egret.TouchEvent.TOUCH_END, p.mouseUp, p);
+    };
     p.createGameScene = function () {
         var sky = this.createBitmapByName("bg233_jpg");
         this.addChild(sky);
         var stageW = this.stage.stageWidth;
         var stageH = this.stage.stageHeight;
         this.sbhd(sky, stageW, stageH);
-        var p1;
+        var p1 = new Poke();
+        var mz = this.createBitmapByName("59280457_p0_master1200_jpg");
+        p1.addChild(mz);
+        this.addChild(p1);
+        p1.touchEnabled = true;
+        this.zbhd(p1);
+        p1.x = 4 / 5 * stageW;
+        p1.y = 0;
+        var p2 = new Poke();
+        var mz2 = this.createBitmapByName("59102653_p0_master1200_jpg");
+        p2.addChild(mz2);
+        this.addChild(p2);
+        p2.touchEnabled = true;
+        this.zbhd(p2);
+        p2.x = 4 / 5 * stageW;
+        p2.y = 0;
+        var p3 = new Poke();
+        var mz3 = this.createBitmapByName("59214113_p0_master1200_jpg");
+        p3.addChild(mz3);
+        this.addChild(p3);
+        p3.touchEnabled = true;
+        this.zbhd(p3);
+        p3.x = 4 / 5 * stageW;
+        p3.y = 0;
         var topMask = new egret.Shape();
         topMask.graphics.beginFill(0x000000, 0.5);
         topMask.graphics.drawRect(0, 0, stageW, 175);

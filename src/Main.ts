@@ -28,10 +28,50 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 
-  class Poke  extends egret.DisplayObjectContainer
-  {
-    
+  class Poke extends egret.DisplayObjectContainer {
+
+    private _touchStatus:boolean = false;              
+    private _distance:egret.Point = new egret.Point(); 
+    private stageW=640;
+
+
+    public mouseDown(evt:egret.TouchEvent) {
+             this._touchStatus = true;
+             this._distance.y = evt.stageY - this.y;
+             this.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
+    }
+
+    private mouseMove(evt:egret.TouchEvent) {
+            if( this._touchStatus ) {
+                 this.y = evt.stageY - this._distance.y;
+                
+            }            
+    }
+
+    public mouseUp(evt:egret.TouchEvent) {
+            this._touchStatus = false;
+             if( this.y < -1136/3 ){
+                     egret.Tween.get( this ).to( {x:4/5*this.stageW,y:-1136}, 200, egret.Ease.sineIn )
+                     .wait(300).to({x:4/5*this.stageW,y:0}, 100, egret.Ease.sineIn);
+                     this.parent.addChildAt(this,1);
+                     this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
+                 }
+                 else{ egret.Tween.get( this ).to( {x:4/5*this.stageW,y:0}, 200, egret.Ease.sineIn )
+                 .to( {x:4/5*this.stageW,y:20}, 100, egret.Ease.sineIn ).to( {x:4/5*this.stageW,y:0}, 100, egret.Ease.sineIn );
+                
+            }
+                 if( this.y >1136/3 ){
+                     egret.Tween.get( this ).to( {x:4/5*this.stageW,y:-1136}, 200, egret.Ease.sineIn )
+                     .wait(300).to({x:4/5*this.stageW,y:0}, 100, egret.Ease.sineIn);
+                     this.parent.addChildAt(this,1);
+                     this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
+                 }else{ egret.Tween.get( this ).to( {x:4/5*this.stageW,y:0}, 200, egret.Ease.sineIn )
+                 .to( {x:4/5*this.stageW,y:-25}, 100, egret.Ease.sineIn ).to( {x:4/5*this.stageW,y:0}, 100, egret.Ease.sineIn );}
    
+
+
+            this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.mouseMove, this);
+    }
 
       
     
@@ -148,44 +188,35 @@ class Main extends egret.DisplayObjectContainer {
       if(sky.x>0) {  
         egret.Tween.get( sky).to( {x:0,y:0}, 100, egret.Ease.sineIn );
         }  
-            if(sky.x<-stageW ) {  
+      if(sky.x<-stageW ) {  
             this.page=2;
             egret.Tween.get( sky).to( {x:-stageW,y:0}, 100, egret.Ease.sineIn );
         }
    
-      if(sky.x>-stageW/3&& this.page==1)
-        {
+      if(sky.x>-stageW/3&& this.page==1) {
              egret.Tween.get( sky).to( {x:0,y:0}, 300, egret.Ease.sineIn );
               this.page=1;       
         }
       
-      if(sky.x<-stageW/3&& this.page==1)
-        {
+      if(sky.x<-stageW/3&& this.page==1) {
              egret.Tween.get( sky).to( {x:-stageW,y:0}, 300, egret.Ease.sineIn );
              this. page=2;
-         
-     
         } 
       
-      else if((sky.x >=((-stageW/3)*2))&& this.page==2)
-        {
+      else if((sky.x >=((-stageW/3)*2))&& this.page==2) {
              egret.Tween.get( sky).to( {x:0,y:0}, 300, egret.Ease.sineIn );
-              this.page=1;
-        
+              this.page=1;      
         } 
-      if(sky.x <-426 && this.page==2&&sky.x>=-stageW)
-        {
+      if(sky.x <-426 && this.page==2&&sky.x>=-stageW) {
              egret.Tween.get( sky).to( {x:-stageW,y:0}, 300, egret.Ease.sineIn );
-             this. page=2;
-          
+             this. page=2;      
         }
 
         this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, this);
      }
 
      function onMove(evt:egret.TouchEvent ):void { 
-          if( touchStatus&&sky.x<=0&&sky.x>=-stageW )
-        {
+          if( touchStatus&&sky.x<=0&&sky.x>=-stageW ) {
             sky.x = evt.stageX -distance.x;
         }
      
@@ -195,24 +226,51 @@ class Main extends egret.DisplayObjectContainer {
   
        touchStatus = true;
        distance.x = evt.stageX - sky.x;
-      distance.y = evt.stageY - sky.y;
-        this.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, this);
+       distance.y = evt.stageY - sky.y;
+       this.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, this);
      }
 
  }
 
-  
+  private zbhd(p:Poke):void{
+     
+     p.addEventListener(egret.TouchEvent.TOUCH_BEGIN, p.mouseDown, p);
+     p.addEventListener(egret.TouchEvent.TOUCH_END, p.mouseUp, p); 
+}
 
-    private createGameScene():void {
+
+    private createGameScene():void {                                           //is  hereeeeeeeeeee
         var sky:egret.Bitmap= this.createBitmapByName("bg233_jpg");
         this.addChild(sky);
         var stageW:number = this.stage.stageWidth;
         var stageH:number = this.stage.stageHeight;
         this.sbhd(sky,stageW,stageH);
-        var p1:Poke;
-
-  
-
+        var p1:Poke = new Poke();
+        
+        var mz:egret.Bitmap= this.createBitmapByName("59280457_p0_master1200_jpg");
+        p1.addChild(mz);
+        this.addChild(p1);
+        p1.touchEnabled=true;
+        this.zbhd(p1);
+        p1.x=4/5*stageW;
+        p1.y=0;
+        var p2:Poke = new Poke();
+        var mz2:egret.Bitmap= this.createBitmapByName("59102653_p0_master1200_jpg");
+        p2.addChild(mz2);
+        this.addChild(p2);
+        p2.touchEnabled=true;
+        this.zbhd(p2);
+        p2.x=4/5*stageW;
+        p2.y=0;
+        var p3:Poke = new Poke();
+        var mz3:egret.Bitmap= this.createBitmapByName("59214113_p0_master1200_jpg");
+        p3.addChild(mz3);
+        this.addChild(p3);
+        p3.touchEnabled=true;
+        this.zbhd(p3);
+        p3.x=4/5*stageW;
+        p3.y=0;
+        
 
         var topMask = new egret.Shape();
         topMask.graphics.beginFill(0x000000, 0.5);
@@ -274,6 +332,7 @@ class Main extends egret.DisplayObjectContainer {
         result.texture = texture;
         return result;
     }
+
 
     /**
      * 描述文件加载成功，开始播放动画

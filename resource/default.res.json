@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bgImage,egretIcon,头像_jpg,bg233_jpg,bg2332_jpg",
+			"keys": "bgImage,egretIcon,头像_jpg,bg233_jpg,bg2332_jpg,59280457_p0_master1200_jpg,59102653_p0_master1200_jpg,59214113_p0_master1200_jpg",
 			"name": "preload"
 		}
 	],
@@ -32,9 +32,24 @@
 			"name": "bg233_jpg"
 		},
 		{
-			"name": "bg2332_jpg",
+			"url": "assets/bg233.jpg",
 			"type": "image",
-			"url": "assets/bg233.jpg"
+			"name": "bg2332_jpg"
+		},
+		{
+			"url": "assets/59280457_p0_master1200.jpg",
+			"type": "image",
+			"name": "59280457_p0_master1200_jpg"
+		},
+		{
+			"url": "assets/59102653_p0_master1200.jpg",
+			"type": "image",
+			"name": "59102653_p0_master1200_jpg"
+		},
+		{
+			"url": "assets/59214113_p0_master1200.jpg",
+			"type": "image",
+			"name": "59214113_p0_master1200_jpg"
 		}
 	]
 }
