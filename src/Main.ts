@@ -77,12 +77,16 @@
     private _touchStatus:boolean = false;   
     private _pauseTime: number = 0;           
     private stageW=640;
+    private xuanzhuan:number=0;
     private _sound: egret.Sound;
+    public _nScaleBase=0;
+    public isplay=0;
     private _channel: egret.SoundChannel;
     constructor() {
     super();
     this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
+
 
     private onAddToStage(event: egret.Event) {
         this.loadSound();
@@ -107,6 +111,9 @@
         this._channel.addEventListener(egret.Event.SOUND_COMPLETE, this.onComplete, this);
         
         this.addEventListener(egret.Event.ENTER_FRAME, this.onTimeUpdate, this);
+        this.isplay=1;
+
+      
     }
     //停止
     private stop():void {
@@ -117,6 +124,8 @@
             this._channel.stop();
             this._channel = null;
             console.log(this.name);
+              this.isplay=0;
+           
         }
     }
     //播放完成
@@ -139,7 +148,8 @@
     }
   }
 
-
+  class 
+  
 
 
 class Main extends egret.DisplayObjectContainer {
@@ -149,7 +159,8 @@ class Main extends egret.DisplayObjectContainer {
      * Process interface loading
      */
     private loadingView:LoadingUI;
-
+    private static STEP_ROT:number = 3;
+    private static STEP_SCALE:number = .03;
     public constructor() {
         super();
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -237,7 +248,7 @@ class Main extends egret.DisplayObjectContainer {
      var touchStatus:boolean = false;              //当前触摸状态，按下时，值为true
      var distance:egret.Point = new egret.Point();
      sky.touchEnabled=true;  
-      sky.addEventListener( egret.TouchEvent.TOUCH_BEGIN, downTouch, this )
+     sky.addEventListener( egret.TouchEvent.TOUCH_BEGIN, downTouch, this )
      sky.addEventListener( egret.TouchEvent.TOUCH_END, onTouch, this );
 
 
@@ -330,13 +341,29 @@ class Main extends egret.DisplayObjectContainer {
         this.zbhd(p3);
         p3.x=4/5*stageW;
         p3.y=0;
-        
-        var mustp:egret.Bitmap= this.createBitmapByName("头像_jpg");
+      
+        var mustp:egret.Bitmap= this.createBitmapByName("yinyue_png");
         p3.addChild(mz3);
         var mus:Music =new Music;
         this.addChild(mus);
         mus.addChild(mustp);
+        mus.anchorOffsetX= mustp.width/2;
+        mus.anchorOffsetY = mustp.height/2;
+        mus.x=60;
+        mus.y=7/8*stageH+40;
+        
+        mus.addEventListener( egret.Event.ENTER_FRAME, ( evt:egret.Event )=>{      
+        mus._nScaleBase = 0;
+            switch ( mus.isplay ){
+                case 1:        // 仅旋转
+                    mus.rotation += 1;
+               //     mus.scaleX = mus.scaleY = 0.5 + 0.5* Math.abs( Math.sin( mus._nScaleBase += Main.STEP_SCALE ) );
+                    break;
+                case 0:
+                    break;
+            }
 
+        }, this );
         var topMask = new egret.Shape();
         topMask.graphics.beginFill(0x000000, 0.5);
         topMask.graphics.drawRect(0, 0, stageW, 175);
@@ -365,9 +392,9 @@ class Main extends egret.DisplayObjectContainer {
         colorLabel.textColor = 0xffffff;
         colorLabel.width = stageW - 172;
         colorLabel.textAlign = "center";
-        colorLabel.text = "Hello Egret";
-        colorLabel.size = 24;
-        colorLabel.x = 172;
+        colorLabel.text = "崔叔阳";
+        colorLabel.size = 54;
+        colorLabel.x = 140;
         colorLabel.y = 80;
         this.addChild(colorLabel);
 
@@ -378,8 +405,8 @@ class Main extends egret.DisplayObjectContainer {
         textfield.textAlign = egret.HorizontalAlign.CENTER;
         textfield.size = 24;
         textfield.textColor = 0xffffff;
-        textfield.x = 172;
-        textfield.y = 135;
+        textfield.x = 140;
+        textfield.y = 150;
         this.textfield = textfield;
 
 

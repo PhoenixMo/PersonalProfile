@@ -78,6 +78,9 @@ var Music = (function (_super) {
         this._touchStatus = false;
         this._pauseTime = 0;
         this.stageW = 640;
+        this.xuanzhuan = 0;
+        this._nScaleBase = 0;
+        this.isplay = 0;
         this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
     }
     var d = __define,c=Music,p=c.prototype;
@@ -100,6 +103,7 @@ var Music = (function (_super) {
         this._channel = this._sound.play(this._pauseTime, 1);
         this._channel.addEventListener(egret.Event.SOUND_COMPLETE, this.onComplete, this);
         this.addEventListener(egret.Event.ENTER_FRAME, this.onTimeUpdate, this);
+        this.isplay = 1;
     };
     //停止
     p.stop = function () {
@@ -109,11 +113,11 @@ var Music = (function (_super) {
             this._channel.stop();
             this._channel = null;
             console.log(this.name);
+            this.isplay = 0;
         }
     };
     //播放完成
     p.onComplete = function (e) {
-        console.log("播放完成");
         this.stop();
     };
     //更新进度
@@ -123,7 +127,7 @@ var Music = (function (_super) {
     /** 以下为 UI 代码 **/
     p.init = function () {
         var isplay = false;
-        //play
+        //play   
         this.touchEnabled = true; //恩
         this.addEventListener(egret.TouchEvent.TOUCH_TAP, function () {
             if (isplay == false) {
@@ -293,11 +297,26 @@ var Main = (function (_super) {
         this.zbhd(p3);
         p3.x = 4 / 5 * stageW;
         p3.y = 0;
-        var mustp = this.createBitmapByName("头像_jpg");
+        var mustp = this.createBitmapByName("yinyue_png");
         p3.addChild(mz3);
         var mus = new Music;
         this.addChild(mus);
         mus.addChild(mustp);
+        mus.anchorOffsetX = mustp.width / 2;
+        mus.anchorOffsetY = mustp.height / 2;
+        mus.x = 60;
+        mus.y = 7 / 8 * stageH + 40;
+        mus.addEventListener(egret.Event.ENTER_FRAME, function (evt) {
+            mus._nScaleBase = 0;
+            switch (mus.isplay) {
+                case 1:
+                    mus.rotation += 1;
+                    //     mus.scaleX = mus.scaleY = 0.5 + 0.5* Math.abs( Math.sin( mus._nScaleBase += Main.STEP_SCALE ) );
+                    break;
+                case 0:
+                    break;
+            }
+        }, this);
         var topMask = new egret.Shape();
         topMask.graphics.beginFill(0x000000, 0.5);
         topMask.graphics.drawRect(0, 0, stageW, 175);
@@ -322,9 +341,9 @@ var Main = (function (_super) {
         colorLabel.textColor = 0xffffff;
         colorLabel.width = stageW - 172;
         colorLabel.textAlign = "center";
-        colorLabel.text = "Hello Egret";
-        colorLabel.size = 24;
-        colorLabel.x = 172;
+        colorLabel.text = "崔叔阳";
+        colorLabel.size = 54;
+        colorLabel.x = 140;
         colorLabel.y = 80;
         this.addChild(colorLabel);
         var textfield = new egret.TextField();
@@ -334,8 +353,8 @@ var Main = (function (_super) {
         textfield.textAlign = egret.HorizontalAlign.CENTER;
         textfield.size = 24;
         textfield.textColor = 0xffffff;
-        textfield.x = 172;
-        textfield.y = 135;
+        textfield.x = 140;
+        textfield.y = 150;
         this.textfield = textfield;
         //根据name关键字，异步获取一个json配置文件，name属性请参考resources/resource.json配置文件的内容。
         // Get asynchronously a json configuration file according to name keyword. As for the property of name please refer to the configuration file of resources/resource.json.
@@ -386,6 +405,8 @@ var Main = (function (_super) {
     p.changeDescription = function (textfield, textFlow) {
         textfield.textFlow = textFlow;
     };
+    Main.STEP_ROT = 3;
+    Main.STEP_SCALE = .03;
     return Main;
 }(egret.DisplayObjectContainer));
 egret.registerClass(Main,'Main');
