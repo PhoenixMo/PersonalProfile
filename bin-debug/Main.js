@@ -71,6 +71,15 @@ var Poke = (function (_super) {
     return Poke;
 }(egret.DisplayObjectContainer));
 egret.registerClass(Poke,'Poke');
+var Sky = (function (_super) {
+    __extends(Sky, _super);
+    function Sky() {
+        _super.apply(this, arguments);
+    }
+    var d = __define,c=Sky,p=c.prototype;
+    return Sky;
+}(egret.DisplayObjectContainer));
+egret.registerClass(Sky,'Sky');
 var Music = (function (_super) {
     __extends(Music, _super);
     function Music() {
@@ -112,7 +121,6 @@ var Music = (function (_super) {
             this.removeEventListener(egret.Event.ENTER_FRAME, this.onTimeUpdate, this);
             this._channel.stop();
             this._channel = null;
-            console.log(this.name);
             this.isplay = 0;
         }
     };
@@ -143,6 +151,39 @@ var Music = (function (_super) {
     return Music;
 }(egret.DisplayObjectContainer));
 egret.registerClass(Music,'Music');
+var xinxi = (function (_super) {
+    __extends(xinxi, _super);
+    //   private tp:egret.Bitmap;
+    function xinxi(x) {
+        _super.call(this);
+        this._touchStatus = false;
+        this.stageW = 640;
+        this.xx = x;
+        //   this.tp=tp;
+        this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
+    }
+    var d = __define,c=xinxi,p=c.prototype;
+    p.onAddToStage = function (event) {
+        var topMask = new egret.Shape();
+        topMask.graphics.beginFill(0x000000, 0.5);
+        topMask.graphics.drawRect(0, 0, this.stageW / 5 * 4, 600);
+        topMask.graphics.endFill();
+        this.addChild(topMask);
+        //    this.tp.x=this.tp.y=40;
+        this.xx.x = 70;
+        this.xx.y = 60;
+        this.addChild(this.xx);
+        //   this.addChild(this.tp);
+        //    this.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.dong, this);
+    };
+    p.dong = function () {
+        //    egret.Tween.get(this.tp).to( {x:25,y:this.tp.y}, 400, egret.Ease.sineIn ).to( {x:40,y:this.tp.y}, 400, egret.Ease.sineIn );
+        egret.Tween.get(this.xx).to({ x: 115, y: this.xx.y }, 400, egret.Ease.sineIn).to({ x: 100, y: this.xx.y }, 400, egret.Ease.sineIn);
+    };
+    p.getxx = function () { return this.xx; };
+    return xinxi;
+}(egret.DisplayObjectContainer));
+egret.registerClass(xinxi,'xinxi');
 var Main = (function (_super) {
     __extends(Main, _super);
     function Main() {
@@ -268,8 +309,10 @@ var Main = (function (_super) {
         p.addEventListener(egret.TouchEvent.TOUCH_END, p.mouseUp, p);
     };
     p.createGameScene = function () {
-        var sky = this.createBitmapByName("bg233_jpg");
+        var sky = new Sky();
+        var bg = this.createBitmapByName("bg233_jpg");
         this.addChild(sky);
+        sky.addChild(bg);
         var stageW = this.stage.stageWidth;
         var stageH = this.stage.stageHeight;
         this.sbhd(sky, stageW, stageH);
@@ -317,9 +360,32 @@ var Main = (function (_super) {
                     break;
             }
         }, this);
+        var xx1 = new egret.TextField();
+        xx1.textColor = 0xffffff;
+        xx1.width = stageW - 172;
+        xx1.textAlign = "Left";
+        xx1.text = "学号：14081201\n\nQQ：1002375424\n手机：13910804095\n邮箱：1002375424@qq.com\n\n不想在代码上懵逼\n更不想在画画上懵逼\n懒\n幸运E";
+        xx1.size = 30;
+        var xinxi1 = new xinxi(xx1);
+        sky.addChild(xinxi1);
+        xinxi1.y = 300;
+        xinxi1.getxx().alpha = 0;
+        this.ruchang(xinxi1);
+        var xx2 = new egret.TextField();
+        xx2.textColor = 0xffffff;
+        xx2.width = stageW - 172;
+        xx2.textAlign = "Left";
+        xx2.text = "代码真是......有趣啊\n喜欢玩益智烧脑的游戏\n（然而玩不6\n\n努力成为插画师！\n技艺不精前途渺茫\n沉迷游戏日减消瘦";
+        xx2.size = 30;
+        var xinxi2 = new xinxi(xx2);
+        sky.addChild(xinxi2);
+        xinxi2.y = 300;
+        xinxi2.x = 640;
+        xinxi2.getxx().alpha = 0;
+        this.ruchang(xinxi2);
         var topMask = new egret.Shape();
         topMask.graphics.beginFill(0x000000, 0.5);
-        topMask.graphics.drawRect(0, 0, stageW, 175);
+        topMask.graphics.drawRect(0, 0, stageW / 5 * 4, 175);
         topMask.graphics.endFill();
         topMask.y = 33;
         this.addChild(topMask);
@@ -359,6 +425,27 @@ var Main = (function (_super) {
         //根据name关键字，异步获取一个json配置文件，name属性请参考resources/resource.json配置文件的内容。
         // Get asynchronously a json configuration file according to name keyword. As for the property of name please refer to the configuration file of resources/resource.json.
         RES.getResAsync("description", this.startAnimation, this);
+    };
+    p.ruchang = function (xx) {
+        var Ox = 0;
+        var change = function () {
+            if (xx.getxx().alpha == 0 && Ox - xx.localToGlobal().x < 10 && Ox - xx.localToGlobal().x > -10) {
+                var tw = egret.Tween.get(xx.getxx());
+                tw.to({ "alpha": 1 }, 1000);
+                tw.call(change);
+            }
+            if (xx.getxx().alpha == 1 && (Ox - xx.localToGlobal().x <= -200 || Ox - xx.localToGlobal().x >= 200)) {
+                var tw = egret.Tween.get(xx.getxx());
+                tw.to({ "alpha": 0 }, 1000);
+                tw.call(change);
+            }
+            else {
+                var tw = egret.Tween.get(xx.getxx());
+                tw.wait(1000);
+                tw.call(change);
+            }
+        };
+        change();
     };
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。

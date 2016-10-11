@@ -33,7 +33,7 @@
     private _touchStatus:boolean = false;              
     private _distance:egret.Point = new egret.Point(); 
     private stageW=640;
-
+ 
 
     public mouseDown(evt:egret.TouchEvent) {
              this._touchStatus = true;
@@ -73,6 +73,9 @@
     
   }
      
+  class Sky extends egret.DisplayObjectContainer{
+
+  }
   class Music extends egret.DisplayObjectContainer {
     private _touchStatus:boolean = false;   
     private _pauseTime: number = 0;           
@@ -90,6 +93,7 @@
 
     private onAddToStage(event: egret.Event) {
         this.loadSound();
+      
     }
 
 
@@ -102,7 +106,7 @@
         }, this);
 
         sound.load("resource/assets/Instrumental.mp3");
-     
+        
     }
     //播放
     private play():void {
@@ -123,7 +127,7 @@
             
             this._channel.stop();
             this._channel = null;
-            console.log(this.name);
+    
               this.isplay=0;
            
         }
@@ -148,7 +152,38 @@
     }
   }
 
-  class 
+  class xinxi extends egret.DisplayObjectContainer{
+    private _touchStatus:boolean = false;             
+    private stageW=640;
+    private xx:egret.TextField;
+ //   private tp:egret.Bitmap;
+     constructor(x:egret.TextField) {
+    super();
+    this.xx=x;
+ //   this.tp=tp;
+    this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
+    }
+     private onAddToStage(event: egret.Event) {
+        var topMask = new egret.Shape();
+        topMask.graphics.beginFill(0x000000, 0.5);
+        topMask.graphics.drawRect(0, 0, this.stageW/5*4, 600);
+        topMask.graphics.endFill();
+        this.addChild(topMask);
+    //    this.tp.x=this.tp.y=40;
+        this.xx.x=70;
+        this.xx.y=60; 
+        this.addChild(this.xx);
+     //   this.addChild(this.tp);
+    //    this.stage.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.dong, this);
+
+    }
+    private dong() {
+    //    egret.Tween.get(this.tp).to( {x:25,y:this.tp.y}, 400, egret.Ease.sineIn ).to( {x:40,y:this.tp.y}, 400, egret.Ease.sineIn );
+        egret.Tween.get(this.xx).to( {x:115,y:this.xx.y}, 400, egret.Ease.sineIn).to( {x:100,y:this.xx.y}, 400, egret.Ease.sineIn )
+
+    }
+    public getxx(){return this.xx;}
+  }
   
 
 
@@ -243,7 +278,9 @@ class Main extends egret.DisplayObjectContainer {
      * 创建游戏场景
      * Create a game scene
      */
-    private sbhd(sky:egret.Bitmap,stageW:number,stageH:number):void{
+
+    
+    private sbhd(sky:Sky,stageW:number,stageH:number):void{
     
      var touchStatus:boolean = false;              //当前触摸状态，按下时，值为true
      var distance:egret.Point = new egret.Point();
@@ -261,22 +298,27 @@ class Main extends egret.DisplayObjectContainer {
         }  
       if(sky.x<-stageW ) {  
             this.page=2;
+           
             egret.Tween.get( sky).to( {x:-stageW,y:0}, 100, egret.Ease.sineIn );
+         
         }
    
       if(sky.x>-stageW/3&& this.page==1) {
              egret.Tween.get( sky).to( {x:0,y:0}, 300, egret.Ease.sineIn );
-              this.page=1;       
+              this.page=1;  
+
         }
       
       if(sky.x<-stageW/3&& this.page==1) {
              egret.Tween.get( sky).to( {x:-stageW,y:0}, 300, egret.Ease.sineIn );
              this. page=2;
+             
         } 
       
       else if((sky.x >=((-stageW/3)*2))&& this.page==2) {
              egret.Tween.get( sky).to( {x:0,y:0}, 300, egret.Ease.sineIn );
-              this.page=1;      
+              this.page=1;   
+            
         } 
       if(sky.x <-426 && this.page==2&&sky.x>=-stageW) {
              egret.Tween.get( sky).to( {x:-stageW,y:0}, 300, egret.Ease.sineIn );
@@ -284,6 +326,7 @@ class Main extends egret.DisplayObjectContainer {
         }
 
         this.stage.removeEventListener(egret.TouchEvent.TOUCH_MOVE, onMove, this);
+     
      }
 
      function onMove(evt:egret.TouchEvent ):void { 
@@ -307,12 +350,18 @@ class Main extends egret.DisplayObjectContainer {
      
      p.addEventListener(egret.TouchEvent.TOUCH_BEGIN, p.mouseDown, p);
      p.addEventListener(egret.TouchEvent.TOUCH_END, p.mouseUp, p); 
+
+
 }
+   
 
 
+        
     private createGameScene():void {                                           //is  hereeeeeeeeeee
-        var sky:egret.Bitmap= this.createBitmapByName("bg233_jpg");
+        var sky:Sky=new Sky();
+        var bg:egret.Bitmap= this.createBitmapByName("bg233_jpg");
         this.addChild(sky);
+        sky.addChild(bg);
         var stageW:number = this.stage.stageWidth;
         var stageH:number = this.stage.stageHeight;
         this.sbhd(sky,stageW,stageH);
@@ -341,7 +390,11 @@ class Main extends egret.DisplayObjectContainer {
         this.zbhd(p3);
         p3.x=4/5*stageW;
         p3.y=0;
-      
+   
+  
+
+    
+
         var mustp:egret.Bitmap= this.createBitmapByName("yinyue_png");
         p3.addChild(mz3);
         var mus:Music =new Music;
@@ -351,6 +404,8 @@ class Main extends egret.DisplayObjectContainer {
         mus.anchorOffsetY = mustp.height/2;
         mus.x=60;
         mus.y=7/8*stageH+40;
+        
+
         
         mus.addEventListener( egret.Event.ENTER_FRAME, ( evt:egret.Event )=>{      
         mus._nScaleBase = 0;
@@ -364,9 +419,36 @@ class Main extends egret.DisplayObjectContainer {
             }
 
         }, this );
+
+        var xx1 =new egret.TextField(); 
+        xx1.textColor = 0xffffff;
+        xx1.width = stageW - 172;
+        xx1.textAlign = "Left";
+        xx1.text = "学号：14081201\n\nQQ：1002375424\n手机：13910804095\n邮箱：1002375424@qq.com\n\n不想在代码上懵逼\n更不想在画画上懵逼\n懒\n幸运E";
+        xx1.size = 30;
+        var xinxi1:xinxi =new xinxi(xx1);
+        sky.addChild(xinxi1);
+        xinxi1.y=300;
+        xinxi1.getxx().alpha=0;
+        this.ruchang(xinxi1);
+
+        var xx2 =new egret.TextField(); 
+        xx2.textColor = 0xffffff;
+        xx2.width = stageW - 172;
+        xx2.textAlign = "Left";
+        xx2.text = "代码真是......有趣啊\n喜欢玩益智烧脑的游戏\n（然而玩不6\n\n努力成为插画师！\n技艺不精前途渺茫\n沉迷游戏日减消瘦";
+        xx2.size = 30;
+        var xinxi2:xinxi =new xinxi(xx2);
+        sky.addChild(xinxi2);
+        xinxi2.y=300;
+        xinxi2.x=640;
+        xinxi2.getxx().alpha=0;
+        this.ruchang(xinxi2);
+
+     
         var topMask = new egret.Shape();
         topMask.graphics.beginFill(0x000000, 0.5);
-        topMask.graphics.drawRect(0, 0, stageW, 175);
+        topMask.graphics.drawRect(0, 0, stageW/5*4, 175);
         topMask.graphics.endFill();
         topMask.y = 33;
         this.addChild(topMask);
@@ -416,6 +498,32 @@ class Main extends egret.DisplayObjectContainer {
         RES.getResAsync("description", this.startAnimation, this)
     }
 
+    private ruchang(xx:xinxi){
+            var Ox=0;
+       var change:Function = function () {
+             if(xx.getxx().alpha==0&&Ox-xx.localToGlobal().x<10&&Ox-xx.localToGlobal().x>-10) {
+          
+             var tw = egret.Tween.get(xx.getxx());
+            tw.to({"alpha": 1}, 1000);
+            tw.call(change);
+  
+            }
+        if(xx.getxx().alpha==1&&(Ox-xx.localToGlobal().x<=-200||Ox-xx.localToGlobal().x>=200))      
+          {     
+              var tw = egret.Tween.get(xx.getxx());
+            tw.to({"alpha": 0}, 1000);     
+            tw.call(change);
+            }
+            else {
+               var tw = egret.Tween.get(xx.getxx());   
+               tw.wait(1000);    
+               tw.call(change);}
+        };
+
+        change();
+  
+
+    }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
      * Create a Bitmap object according to name keyword.As for the property of name please refer to the configuration file of resources/resource.json.
@@ -443,6 +551,7 @@ class Main extends egret.DisplayObjectContainer {
 
         var textfield = self.textfield;
         var count = -1;
+
         var change:Function = function () {
             count++;
             if (count >= textflowArr.length) {
