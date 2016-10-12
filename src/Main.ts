@@ -448,7 +448,7 @@ class Main extends egret.DisplayObjectContainer {
      
         var topMask = new egret.Shape();
         topMask.graphics.beginFill(0x000000, 0.5);
-        topMask.graphics.drawRect(0, 0, stageW/5*4, 175);
+        topMask.graphics.drawRect(0, 0, stageW/5*4, 1175);
         topMask.graphics.endFill();
         topMask.y = 33;
         this.addChild(topMask);
@@ -468,7 +468,7 @@ class Main extends egret.DisplayObjectContainer {
         line.x = 172;
         line.y = 61;
         this.addChild(line);
-
+        
 
         var colorLabel = new egret.TextField();
         colorLabel.textColor = 0xffffff;

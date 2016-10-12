@@ -385,7 +385,7 @@ var Main = (function (_super) {
         this.ruchang(xinxi2);
         var topMask = new egret.Shape();
         topMask.graphics.beginFill(0x000000, 0.5);
-        topMask.graphics.drawRect(0, 0, stageW / 5 * 4, 175);
+        topMask.graphics.drawRect(0, 0, stageW / 5 * 4, 1175);
         topMask.graphics.endFill();
         topMask.y = 33;
         this.addChild(topMask);
